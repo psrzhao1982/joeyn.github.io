@@ -1,13 +1,13 @@
 # GitHub Pages 说明
 
-本目录用于部署应用官网：https://joeyn.github.io/food_tracker/
+本目录用于部署应用官网：https://psrzhao1982.github.io/joeyn.github.io/
 
 ## 开启步骤
 
 1. 将项目推送到 GitHub 仓库（如 `food_tracker`）
 2. 仓库 Settings → Pages → Source 选择 **Deploy from a branch**
 3. Branch 选 `main`，Folder 选 **/docs**
-4. 保存后等待 1–2 分钟，访问 https://joeyn.github.io/food_tracker/
+4. 保存后等待 1–2 分钟，访问 https://psrzhao1982.github.io/joeyn.github.io/
 
 ## 添加截图
 

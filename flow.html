@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>饮食助手 - 应用流程与设计说明</title>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: #f8f9fa;
+      padding: 2rem 1rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    h1 { font-size: 1.5rem; margin-bottom: 1rem; color: #1a1a1a; }
+    h2 { font-size: 1.2rem; margin: 2rem 0 1rem; color: #333; }
+    p { margin-bottom: 0.75rem; }
+    .mermaid { background: #fff; padding: 1rem; border-radius: 8px; margin: 1rem 0; text-align: center; }
+    .back { display: inline-block; margin-bottom: 1rem; color: #666; text-decoration: none; font-size: 0.9rem; }
+    .back:hover { color: #333; }
+    table { width: 100%; border-collapse: collapse; margin: 1rem 0; background: #fff; border-radius: 8px; overflow: hidden; }
+    th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid #eee; }
+    th { background: #f5f5f5; font-weight: 600; }
+    pre { background: #1e1e1e; color: #d4d4d4; padding: 1rem; border-radius: 8px; overflow-x: auto; font-size: 0.85rem; margin: 1rem 0; }
+  </style>
+</head>
+<body>
+  <a href="index.html" class="back">← 返回应用首页</a>
+  <h1>饮食助手 - 应用流程与设计说明</h1>
+  <p>本文档说明应用的整体架构、业务流程、交互设计与数据流。</p>
+
+  <h2>一、应用概述</h2>
+  <p>饮食助手（Food Tracker）是一款极简风格的饮食健康应用，通过 AI 根据用户输入的食材或想吃的菜名，自动生成菜谱及营养信息，支持拍照识别食材、分享到微信/朋友圈等功能。</p>
+
+  <h2>二、主业务流程</h2>
+  <div class="mermaid">
+flowchart TD
+    A[打开 App] --> B[首页]
+    B --> C{选择输入方式}
+    C -->|手动输入| D[输入食材/菜名]
+    C -->|拍照识别| E[拍照/选图]
+    E --> F[AI 识别食材]
+    F --> D
+    D --> G[点击生成菜谱]
+    G --> H[AI 生成菜谱]
+    H --> I[菜谱详情页]
+    I --> J{用户操作}
+    J -->|编辑| K[修改菜谱]
+    J -->|分享| L[分享到微信/朋友圈]
+    J -->|打卡| M[标记计划/完成/跳过]
+    J -->|返回| B
+    K --> I
+  </div>
+
+  <h2>三、菜谱生成流程</h2>
+  <div class="mermaid">
+flowchart TD
+    A[用户提交输入] --> B{输入是否为空}
+    B -->|是| C[提示输入]
+    B -->|否| D[调用 RecipeService]
+    D --> E{DeepSeek 可用?}
+    E -->|是| F[调用 DeepSeek API]
+    E -->|否| G{豆包已配置?}
+    G -->|是| H[调用豆包 API]
+    G -->|否| I[返回示例菜谱]
+    F --> J{调用成功?}
+    J -->|是| K[解析菜谱 JSON]
+    J -->|否| H
+    H --> L{调用成功?}
+    L -->|是| K
+    L -->|否| I
+    K --> M[保存到历史]
+    M --> N[跳转菜谱详情页]
+    I --> N
+  </div>
+
+  <h2>四、拍照识别食材流程</h2>
+  <div class="mermaid">
+flowchart TD
+    A[用户点击拍照] --> B{选择图片来源}
+    B -->|拍照| C[调用相机]
+    B -->|相册| D[选择相册图片]
+    B -->|文件| E[选择本地文件]
+    C --> F[获取图片]
+    D --> F
+    E --> F
+    F --> G[调用图片识别服务]
+    G --> H{识别引擎}
+    H -->|豆包| I[火山方舟视觉 API]
+    H -->|DeepSeek| J[DeepSeek 视觉 API]
+    I --> K[返回食材文本]
+    J --> K
+    K --> L[填入输入框]
+    L --> M[用户可点击生成菜谱]
+  </div>
+
+  <h2>五、分享流程</h2>
+  <div class="mermaid">
+flowchart TD
+    A[菜谱详情页] --> B[点击分享]
+    B --> C[弹出分享面板]
+    C --> D{选择分享方式}
+    D -->|分享到微信| E{微信 SDK 已配置?}
+    D -->|分享到朋友圈| E
+    D -->|生成海报| F[截图生成图片]
+    D -->|复制菜谱| G[复制到剪贴板]
+    D -->|更多分享| H[系统分享面板]
+    E -->|是| I[fluwx 直连微信]
+    E -->|否| H
+    F --> H
+    I --> J[打开微信]
+    H --> K[用户选择目标 App]
+  </div>
+
+  <h2>六、页面导航结构</h2>
+  <div class="mermaid">
+flowchart LR
+    subgraph 底部导航
+        A[首页] --- B[历史] --- C[我的]
+    end
+    A --> D[菜谱详情]
+    B --> D
+    D --> E[编辑弹窗]
+    D --> F[分享面板]
+    C --> G[偏好设置]
+    C --> H[清空历史]
+  </div>
+
+  <h2>七、核心功能模块</h2>
+  <table>
+    <tr><th>模块</th><th>功能说明</th></tr>
+    <tr><td>首页</td><td>大输入框输入食材/菜名；拍照/相册/文件选择图片进行 AI 食材识别；生成菜谱按钮；最近生成记录快捷入口</td></tr>
+    <tr><td>历史</td><td>按日期分组的菜谱列表；搜索；打卡状态筛选（计划中/已完成/已跳过）；点击进入详情</td></tr>
+    <tr><td>菜谱详情</td><td>菜名、营养评级、材料、步骤、环形进度条；编辑、删除、点赞、评论、分享</td></tr>
+    <tr><td>我的</td><td>菜系偏好、忌口设置；拍照识别引擎切换（豆包/DeepSeek）；清空历史；关于说明</td></tr>
+  </table>
+
+  <h2>八、应用整体架构</h2>
+  <pre>
+┌─────────────────────────────────────────────────────────────────┐
+│                        饮食助手 App                               │
+├─────────────────────────────────────────────────────────────────┤
+│  首页(Home)     │   历史(History)    │    我的(Profile)           │
+│  输入/拍照      │   菜谱列表/搜索    │   偏好设置/拍照识别切换     │
+└────────┬────────┴────────┬──────────┴────────────┬──────────────┘
+         │                 │                        │
+         ▼                 ▼                        ▼
+┌────────────────┐ ┌──────────────┐ ┌─────────────────────────────┐
+│ 菜谱生成服务    │ │ 本地存储     │ │ 图片识别服务                 │
+│ DeepSeek/豆包   │ │ 历史记录     │ │ 豆包/DeepSeek 视觉模型       │
+└────────────────┘ └──────────────┘ └─────────────────────────────┘
+  </pre>
+
+  <h2>九、导出为图片（用于审核上传）</h2>
+  <p>如需将流程图导出为图片上传至审核平台：</p>
+  <ul style="margin: 0.5rem 0 1rem 1.5rem;">
+    <li><strong>截图</strong>：对上方各流程图区域进行截图保存为 PNG</li>
+    <li><strong>Mermaid Live</strong>：将流程图代码复制到 <a href="https://mermaid.live/">mermaid.live</a> 可导出高清 PNG/SVG</li>
+  </ul>
+
+  <p style="margin-top: 2rem; font-size: 0.95rem; color: #666;">文档版本：1.0 | 更新日期：2025-03</p>
+
+  <script>
+    mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
+  </script>
+</body>
+</html>

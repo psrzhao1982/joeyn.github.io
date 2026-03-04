@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>变美好菜谱 - 功能详细描述</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.7;
+      color: #333;
+      background: #f8f9fa;
+      padding: 2rem 1rem;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    .back {
+      display: inline-block;
+      margin-bottom: 1.5rem;
+      color: #666;
+      text-decoration: none;
+      font-size: 0.95rem;
+    }
+    .back:hover { color: #333; }
+    h1 { font-size: 1.5rem; margin-bottom: 0.5rem; color: #1a1a1a; }
+    .subtitle { font-size: 0.95rem; color: #666; margin-bottom: 1.5rem; }
+    h2 { font-size: 1.15rem; margin: 2rem 0 0.75rem; color: #333; border-bottom: 1px solid #eee; padding-bottom: 0.25rem; }
+    h3 { font-size: 1.05rem; margin: 1.25rem 0 0.5rem; color: #444; }
+    p { margin-bottom: 0.75rem; }
+    ul { margin: 0.5rem 0 1rem 1.25rem; }
+    li { margin-bottom: 0.35rem; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+      background: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid #eee; }
+    th { background: #f5f5f5; font-weight: 600; font-size: 0.9rem; }
+    td { font-size: 0.95rem; }
+    .section { background: #fff; padding: 1.25rem; border-radius: 12px; margin-bottom: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    .note { font-size: 0.9rem; color: #666; margin-top: 0.5rem; }
+    .footer { margin-top: 2rem; font-size: 0.85rem; color: #999; }
+  </style>
+</head>
+<body>
+  <a href="index.html" class="back">← 返回应用首页</a>
+  <h1>变美好菜谱 - 功能详细描述</h1>
+  <p class="subtitle">Make Every Meal Better</p>
+
+  <div class="section">
+    <h2>一、核心功能</h2>
+    <h3>1.1 菜谱模式</h3>
+    <p>输入食材或想吃的菜名，AI 自动生成完整菜谱。</p>
+    <p><strong>输出内容</strong>：菜名、材料列表（含用量）、制作步骤（4～8 步）、营养估算（热量、蛋白质、碳水、脂肪）、健康评级（绿/黄/红 + 说明理由）。</p>
+    <p><strong>适用场景</strong>：明确想吃什么菜，或手头有食材想找做法。</p>
+
+    <h3>1.2 食材模式</h3>
+    <p>输入部分食材，AI 推荐 3～5 道可做的简单家常菜。</p>
+    <p><strong>特点</strong>：推荐菜以用户提供的食材为主，做法简单（15～30 分钟内完成）；每道菜附带简短说明（如「快手」「低脂」「开胃」）；点击推荐菜可立即生成该菜的完整菜谱。</p>
+    <p><strong>适用场景</strong>：冰箱里有几样食材，不知道做什么。</p>
+
+    <h3>1.3 三种输入方式</h3>
+    <table>
+      <tr><th>方式</th><th>说明</th><th>适用场景</th></tr>
+      <tr><td><strong>文字输入</strong></td><td>在输入框中直接输入食材或菜名</td><td>日常使用</td></tr>
+      <tr><td><strong>语音输入</strong></td><td>点击麦克风按钮，说出食材或菜名，自动转文字填入</td><td>双手不便、快速输入（真机）</td></tr>
+      <tr><td><strong>拍照识图</strong></td><td>拍照或从相册/文件选择图片，AI 识别食材并填入</td><td>对着冰箱/食材拍照</td></tr>
+    </table>
+    <p class="note">注：语音输入需真机使用，模拟器上麦克风按钮会隐藏。</p>
+  </div>
+
+  <div class="section">
+    <h2>二、菜谱详情与操作</h2>
+    <p><strong>菜谱展示</strong>：菜名、健康评级标签、营养环形进度条、所需材料、制作步骤。</p>
+    <p><strong>用户操作</strong>：</p>
+    <ul>
+      <li>编辑：修改菜名、材料、步骤</li>
+      <li>删除：删除该菜谱记录</li>
+      <li>点赞：标记喜欢的菜谱</li>
+      <li>评论：添加个人笔记或改进建议</li>
+      <li>打卡：标记「想做」「我做了」「不感兴趣」</li>
+      <li>再来一个：基于相同输入重新生成新菜谱</li>
+      <li>分享：分享到微信、朋友圈、生成海报、复制菜谱、系统分享</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>三、历史记录</h2>
+    <p>按时间分组（今天、最近 7 天、更早）；支持按菜名或输入内容搜索；状态筛选（全部、想做、我做了、不感兴趣）；本周「我做了」统计；左滑删除单条记录。</p>
+  </div>
+
+  <div class="section">
+    <h2>四、我的（个人设置）</h2>
+    <p><strong>语言设置</strong>：支持 7 种语言（简体中文、English、日本語、한국어、Español、Français、Deutsch），可切换「跟随系统」或指定语言。</p>
+    <p><strong>饮食偏好</strong>：菜系偏好、忌口设置，AI 生成菜谱时会参考。</p>
+    <p><strong>我的成就</strong>：已做过、已点赞、想做的数量统计。</p>
+    <p><strong>拍照识别</strong>：切换 AI 平台（豆包 / DeepSeek）。</p>
+    <p><strong>数据管理</strong>：清空历史记录（不可恢复）。</p>
+  </div>
+
+  <div class="section">
+    <h2>五、分享功能</h2>
+    <p>分享到微信、分享到朋友圈、生成分享海报、复制菜谱、更多分享（系统分享面板）。未配置微信 SDK 时，分享到微信/朋友圈会使用系统分享面板。</p>
+  </div>
+
+  <div class="section">
+    <h2>六、技术特性</h2>
+    <p>AI 引擎：DeepSeek（菜谱生成）、豆包/DeepSeek（拍照识别）；多语言：Flutter 官方 l10n；语音识别：speech_to_text（真机）；图片识别：豆包火山方舟视觉 API；本地存储：SharedPreferences。</p>
+  </div>
+
+  <p class="footer">文档版本：1.0 | 更新日期：2025-03</p>
+</body>
+</html>
